@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>École - Système de Gestion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Menu Latéral -->
+        <aside class="w-64 bg-gradient-to-b from-emerald-700 to-emerald-900 text-white flex-shrink-0 shadow-2xl">
+            <div class="p-6 border-b border-emerald-600">
+                <h1 class="text-2xl font-bold">Admin</h1>
+            </div>
+            <nav class="p-4">
+                <a href="#" onclick="showDashboard(); return false;" class="menu-item active block py-3 px-4 rounded-lg transition mb-2">Dashboard</a>
+                <a href="#" onclick="showSection('etudiants'); return false;" class="menu-item block py-3 px-4 rounded-lg transition mb-2">Étudiants</a>
+                <a href="#" onclick="showSection('professeurs'); return false;" class="menu-item block py-3 px-4 rounded-lg transition mb-2">Professeurs</a>
+                <a href="#" onclick="showSection('classes'); return false;" class="menu-item block py-3 px-4 rounded-lg transition mb-2">Classes</a>
+                <a href="#" onclick="showSection('matieres'); return false;" class="menu-item block py-3 px-4 rounded-lg transition mb-2">Matières</a>
+                <a href="#" onclick="showSection('notes'); return false;" class="menu-item block py-3 px-4 rounded-lg transition mb-2">Notes</a>
+            </nav>
+        </aside>
+
+        <!-- Contenu Principal -->
+        <main class="flex-1 overflow-y-auto">
+            <!-- Dashboard -->
+            <div id="dashboard" class="p-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8">Tableau de bord</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition">
+                        <h3 class="text-gray-600 text-sm font-semibold mb-2">Étudiants</h3>
+                        <p class="text-4xl font-bold text-emerald-700" id="count-etudiants">0</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition">
+                        <h3 class="text-gray-600 text-sm font-semibold mb-2">Professeurs</h3>
+                        <p class="text-4xl font-bold text-orange-500" id="count-professeurs">0</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition">
+                        <h3 class="text-gray-600 text-sm font-semibold mb-2">Classes</h3>
+                        <p class="text-4xl font-bold text-blue-600" id="count-classes">0</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition">
+                        <h3 class="text-gray-600 text-sm font-semibold mb-2">Matières</h3>
+                        <p class="text-4xl font-bold text-purple-600" id="count-matieres">0</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Répartition Étudiants / Professeurs</h3>
+                    <canvas id="chartCanvas" class="max-h-96"></canvas>
+                </div>
+            </div>
+
+            <!-- Section CRUD -->
+            <div id="crud-section" class="hidden p-8">
+                <!-- Vue Tableau -->
+                <div id="table-view">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-3xl font-bold text-gray-800" id="section-title">Gestion</h2>
+                        <button onclick="showFormSection('add'); return false;" class="bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 transition shadow-lg">
+                            + Ajouter
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full" id="data-table">
+                                <thead class="bg-emerald-700 text-white">
+                                    <tr id="table-header"></tr>
+                                </thead>
+                                <tbody id="table-body" class="divide-y divide-gray-200"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vue Formulaire -->
+                <div id="form-view" class="hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-3xl font-bold text-gray-800" id="form-title">Ajouter</h2>
+                        <button onclick="hideFormSection(); return false;" class="text-gray-500 hover:text-gray-700">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-lg p-8">
+                        <form id="crud-form" class="space-y-4" onsubmit="handleFormSubmit(event); return false;">
+                            <div id="form-fields" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                            <div class="flex gap-4 pt-4">
+                                <button type="submit" class="flex-1 bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition shadow-lg">
+                                    Enregistrer
+                                </button>
+                                <button type="button" onclick="hideFormSection(); return false;" class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-400 transition">
+                                    Annuler
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Details -->
+    <div id="details-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">Détails</h3>
+                <button onclick="closeDetailsModal(); return false;" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            <div id="details-content" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <!-- Confirmation -->
+    <div id="confirm-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Confirmer la suppression</h3>
+            <p class="text-gray-600 mb-6">Êtes-vous sûr de vouloir supprimer cet élément ?</p>
+            <div class="flex gap-4">
+                <button onclick="confirmDelete(); return false;" class="flex-1 bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition">
+                    Supprimer
+                </button>
+                <button onclick="closeConfirmModal(); return false;" class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-400 transition">
+                    Annuler
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

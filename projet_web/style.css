@@ -1,0 +1,107 @@
+/* Styles personnalisés */
+.menu-item {
+    transition: background-color 0.3s ease;
+}
+
+.menu-item:hover {
+    background-color: rgba(5, 150, 105, 0.8);
+}
+
+.menu-item.active {
+    background-color: rgb(5, 150, 105);
+}
+
+.shadow-custom {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+    background-color: rgba(249, 250, 251, 1);
+}
+
+/* Styles pour les en-têtes de tableau avec tri */
+.sortable-header {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    padding-right: 24px !important;
+}
+
+.sortable-header:hover {
+    background-color: rgba(5, 150, 105, 0.9);
+}
+
+.sort-icon {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    opacity: 0.5;
+}
+
+.sort-icon.active {
+    opacity: 1;
+}
+
+/* Animation pour les transitions de vue */
+#form-view {
+    animation: fadeIn 0.3s ease-out;
+}
+
+#table-view {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Styles pour les filtres */
+.filter-input {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    width: 100%;
+    margin-top: 4px;
+}
+
+.filter-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.filter-input:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Amélioration visuelle du tableau */
+#data-table th {
+    vertical-align: top;
+}
+
+.header-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Transition fluide entre les vues */
+.hidden {
+    display: none;
+}
